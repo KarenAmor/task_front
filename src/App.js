@@ -1,15 +1,15 @@
 //import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Navbar from './components/layout/Navbar';
 import Home from './components/Home';
-import TaskList from './components/TaskList';
-import Register from './components/Register'
-import Login from './components/Login';
-import TaskForm from './components/TaskForm';
-import OneTask from './components/OneTask';
-import PutTask from './components/PutTask'
-import DeleteTask from './components/DeleteTask';
+import TaskList from './components/task/TaskList';
+import Register from './components/auth/Register'
+import Login from './components/auth/Login';
+import TaskForm from './components/task/TaskForm';
+import OneTask from './components/task/OneTask';
+import PutTask from './components/task/PutTask'
+import DeleteTask from './components/task/DeleteTask';
 
 
 function App() {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from "../context/AuthContext";
 
 export default function TaskList() {
   const [tasks, setTasks] = useState([]); // Estado para las tareas
@@ -7,10 +8,26 @@ export default function TaskList() {
   const [page, setPage] = useState(1); // Estado para la página actual
   const limit = 5; // Número de tareas por página
 
+  const { token } = useAuth(); // Obtén el token del contexto
+
   useEffect(() => {
+    console.log("Ejecutando useEffect"); // Log para indicar que useEffect se ejecutó
+    console.log("Token:", token); // Log para verificar el token
+    console.log("Página actual:", page); // Log para verificar la página actual
+    if (!token) {
+      setError("No estás autenticado. Por favor, inicia sesión.");
+      setLoading(false);
+      return;
+    }
     setLoading(true); // Reinicia el estado de carga al cambiar de página
-    fetch(`https://task-manager-6tex.onrender.com/tasks?page=${page}&limit=${limit}`)
-      .then(response => {
+    fetch(`https://task-manager-6tex.onrender.com/tasks?page=${page}&limit=${limit}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`, // Agrega el token al encabezado de autorización
+      },
+    })
+      .then((response) => {
         if (!response.ok) {
           throw new Error(`Error HTTP! status: ${response.status}`);
         }
@@ -25,7 +42,7 @@ export default function TaskList() {
         setError(error.message); // Guarda el mensaje de error
         setLoading(false); // Detiene la pantalla de carga
       });
-  }, [page]); // Cambia cuando la página cambia
+  }, [page, token]); // Cambia cuando la página cambia
 
   // Muestra un indicador de carga mientras se obtienen las tareas
   if (loading) {
